@@ -63,7 +63,9 @@
   .ph{position:relative; width:100%; background:var(--soft); overflow:hidden;
       display:grid; place-items:center;}
   .ph .emo{font-size:52px; line-height:1; opacity:.55;}
-  .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
+  /* 드래그하면 브라우저가 사진 복사본을 끌고 다닌다 — 네이티브 드래그를 끈다 */
+  .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+          -webkit-user-drag:none; user-select:none;}
   .ph img[hidden]{display:none;}
   /* ── 스와이프 덱 ── */
   .deck{position:relative; flex:1 1 auto; min-height:180px; margin:14px 0 4px;}
@@ -230,10 +232,10 @@
         <div class="pairwrap">
           <div class="pairrow">
             <div class="ph"><span class="emo" aria-hidden="true">🍶</span>
-              <img src="images/pair-makgeolli.jpg" alt="사발에 담긴 막걸리" loading="lazy" decoding="async"></div>
+              <img src="images/pair-makgeolli.jpg" alt="사발에 담긴 막걸리" loading="lazy" decoding="async" draggable="false"></div>
             <div class="plus"><svg class="ico"><use href="#i-plus"/></svg></div>
             <div class="ph"><span class="emo" aria-hidden="true">🥘</span>
-              <img src="images/anju-jeon.jpg" alt="접시에 담긴 삼색전" loading="lazy" decoding="async"></div>
+              <img src="images/anju-jeon.jpg" alt="접시에 담긴 삼색전" loading="lazy" decoding="async" draggable="false"></div>
           </div>
           <div class="matchbar">
             <span>궁합</span>
@@ -320,7 +322,7 @@ const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const photo = (it, extra) =>
   `<div class="ph"><span class="emo" aria-hidden="true">${it.emo}</span>` +
-  `<img src="${esc(it.img)}" alt="${esc(it.alt)}" ${extra} decoding="async"></div>`;
+  `<img src="${esc(it.img)}" alt="${esc(it.alt)}" ${extra} decoding="async" draggable="false"></div>`;
 
 /* 사진이 없어도 깨진 아이콘 대신 뒤의 이모지가 남도록 (load 에러는 버블링하지 않아 캡처로 받는다) */
 document.addEventListener('error', e => {
