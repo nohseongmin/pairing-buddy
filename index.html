@@ -112,7 +112,7 @@
               font-size:56px; background:radial-gradient(circle at 32% 28%,#fff3ea,#fbdcc9);
               border:1px solid #f3ddcc;}
   .hero .lab{margin-top:14px; font-size:12px; font-weight:800; letter-spacing:1px; color:var(--brand);}
-  .hero h2{font-size:29px; font-weight:800; letter-spacing:-1px; margin-top:4px;}
+  .hero h1{font-size:29px; font-weight:800; letter-spacing:-1px; margin-top:4px;}
   .hero .nick{margin-top:7px; font-size:13.5px; font-weight:700; color:var(--muted);}
   .tags{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:12px;}
   .tags span{font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:8px;
@@ -192,7 +192,7 @@
     .q legend{font-size:13.5px; margin-bottom:4px;}
     .opt{padding:7px 10px;}
     .hero .disc{width:92px; height:92px; font-size:46px;}
-    .hero h2{font-size:25px;}
+    .hero h1{font-size:25px;}
   }
   @media (prefers-reduced-motion:reduce){ *{transition-duration:.01ms !important;} }
 </style>
@@ -497,21 +497,21 @@ function renderResult(code, strong){
     <div class="hero">
       <div class="disc" aria-hidden="true">${f.emo}</div>
       <div class="lab">오늘의 추천 안주</div>
-      <h2 id="res-title">${esc(f.n)}</h2>
+      <h1 id="res-title">${esc(f.n)}</h1>
       <div class="nick">“${esc(f.nick)}” 유형</div>
       <div class="tags">${f.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
     </div>
     <p class="why">${esc(f.d)}</p>
 
-    <h3 class="seclabel"><svg class="ico"><use href="#i-glass"/></svg> 여기엔 이 술이 맞아요</h3>
+    <h2 class="seclabel"><svg class="ico"><use href="#i-glass"/></svg> 여기엔 이 술이 맞아요</h2>
     ${drinkCard(pick.k, pick.p, pick.w, f.soft)}
 
-    <h3 class="seclabel"><svg class="ico"><use href="#i-pin"/></svg> 근처에서 먹기</h3>
+    <h2 class="seclabel"><svg class="ico"><use href="#i-pin"/></svg> 근처에서 먹기</h2>
     ${AREAS.map(a => mapRow('i-pin', f.n, a.n, FOOD_Q[code] + (a.q ? ' ' + a.q : ''))).join('')}
     ${mapRow('i-glass', DRINK[pick.k].n, '근처에서 파는 곳', DRINK_Q[pick.k] + ' 파는 곳')}
     <p class="note" style="margin-top:4px">탭하면 구글 지도가 열립니다. 저장된 매장 목록이 아니라 지도 검색으로 연결되는 링크예요.</p>
 
-    <h3 class="seclabel"><svg class="ico"><use href="#i-plate"/></svg> 이런 것도 어울려요</h3>
+    <h2 class="seclabel"><svg class="ico"><use href="#i-plate"/></svg> 이런 것도 어울려요</h2>
     <div class="alts">
       ${altBtn(flip(code, 3, 'HB'), '양만 바꾸면')}
       ${altBtn(flip(code, 2, 'WD'), '국물만 바꾸면')}
