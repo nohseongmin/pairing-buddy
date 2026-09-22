@@ -487,7 +487,7 @@ function altBtn(code, label){
 
 let current = null;
 
-function renderResult(code, strong){
+function renderResult(code, strong, focusResult = true){
   const f = FOOD[code];
   if (!f) return;
   current = { code, strong };
@@ -529,8 +529,10 @@ function renderResult(code, strong){
       사진은 <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener noreferrer">위키미디어 공용</a>의
       자유 이용 이미지를 잘라 쓴 것으로, 특정 제품의 실제 사진이 아닙니다.</p>`;
 
-  show('s-result');
-  $('#s-result').focus();
+  if (focusResult){
+    show('s-result');
+    $('#s-result').focus();
+  }
 
   $('#btn-again').onclick = () => {
     $('#quiz').reset();                       // 답이 남아 있으면 '다시 하기'가 아니다
@@ -539,10 +541,11 @@ function renderResult(code, strong){
     show('s-quiz');
   };
   $('#btn-copy').onclick  = copyResult;
-  document.querySelectorAll('.alt').forEach(b => {
+  document.querySelectorAll('.alt').forEach((b, i) => {
     b.onclick = () => {
       setHash(b.dataset.code + (strong ? 'X' : 'Y'));
-      renderResult(b.dataset.code, strong);
+      renderResult(b.dataset.code, strong, false);   // 같은 화면 안 교체라 재포커스/스크롤 리셋은 하지 않는다
+      document.querySelectorAll('.alt')[i].focus();  // 대신 같은 자리의 새 버튼으로 포커스를 유지한다
     };
   });
 }
