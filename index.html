@@ -221,7 +221,7 @@
   </div>
 
   <!-- ===== 1 : 취향 테스트 ===== -->
-  <section class="screen active" id="s-quiz" aria-labelledby="quiz-title">
+  <section class="screen active" id="s-quiz" aria-labelledby="quiz-title" tabindex="-1">
     <div class="head">
       <div class="headrow">
         <h1 id="quiz-title">오늘 뭐 먹지?</h1>
@@ -444,6 +444,7 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
   const active = $('.screen.active .scroll');
   if (active) active.scrollTop = 0;
+  $('.screen.active').focus();
 }
 
 function drinkCard(key, pct, why, soft){
@@ -531,7 +532,6 @@ function renderResult(code, strong, focusResult = true){
 
   if (focusResult){
     show('s-result');
-    $('#s-result').focus();
   }
 
   $('#btn-again').onclick = () => {
