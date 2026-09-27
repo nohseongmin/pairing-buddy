@@ -574,7 +574,7 @@ function setHash(v){
   setTimeout(() => { skipHash = false; }, 0);
 }
 function fromHash(){
-  const h = decodeURIComponent(location.hash.replace('#', '')).toUpperCase();
+  const h = location.hash.replace('#', '').toUpperCase();
   if (!/^[SM][RL][WD][HB][XY]$/.test(h)) return false;
   renderResult(h.slice(0, 4), h[4] === 'X');
   return true;
