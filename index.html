@@ -561,7 +561,7 @@ async function copyResult(){
     await navigator.clipboard.writeText(text);
     toast('결과를 복사했어요');
   }catch{
-    toast('복사가 막혀 있어요 — 주소를 직접 공유해 주세요');
+    window.prompt('자동 복사가 막혀 있어요. 아래 내용을 복사해 주세요.', text);
   }
 }
 
