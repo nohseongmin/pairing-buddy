@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>대안 안주 탐색 회귀 확인</title>
+</head>
+<body>
+<p>저장소 루트에서 정적 서버를 띄운 뒤 이 파일을 열어 주세요.</p>
+<p id="status" role="status">확인 중입니다.</p>
+<iframe id="app" src="../index.html#SRDHX" width="390" height="820" title="페어링 버디"></iframe>
+<script>
+"use strict";
+
+const HASH_SETTLE_MS = 100;
+const frame = document.querySelector('#app');
+
+function assert(condition, message){
+  if (!condition) throw new Error(message);
+}
+
+frame.addEventListener('load', async () => {
+  let observer;
+  try{
+    const app = frame.contentWindow, doc = app.document;
+    const result = doc.querySelector('#result');
+    const alt = doc.querySelector('.alt');
+    const hash = '#' + alt.dataset.code + 'X';
+    let renders = 0, hashChanges = 0;
+    observer = new app.MutationObserver(records => { renders += records.length; });
+    observer.observe(result, {childList:true});
+    app.addEventListener('hashchange', () => { hashChanges++; }, {once:true});
+
+    result.scrollTop = result.scrollHeight;
+    alt.focus();
+    alt.click();
+    await new Promise(resolve => setTimeout(resolve, HASH_SETTLE_MS));
+
+    assert(app.location.hash === hash, '대안 안주의 공유 주소가 갱신되어야 합니다.');
+    assert(hashChanges === 0, '내부 주소 갱신이 hashchange를 발생시키면 안 됩니다.');
+    assert(renders === 1, '대안 선택 한 번에 결과를 한 번만 그려야 합니다.');
+    assert(doc.activeElement === doc.querySelector('.alt'), '같은 자리의 대안 버튼에 포커스가 남아야 합니다.');
+    assert(result.scrollTop > 0, '대안 선택 후 결과 맨 위로 이동하면 안 됩니다.');
+    document.querySelector('#status').textContent = '통과했습니다.';
+  }catch(error){
+    document.querySelector('#status').textContent = '실패했습니다: ' + error.message;
+    throw error;
+  }finally{
+    if (observer) observer.disconnect();
+  }
+}, {once:true});
+</script>
+</body>
+</html>
