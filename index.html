@@ -566,12 +566,11 @@ async function copyResult(){
 }
 
 /* ─────────── 주소창 해시로 결과 공유 (#SRDH + X/Y) ─────────── */
-let skipHash = false;
 function setHash(v){
-  skipHash = true;
-  if (v) location.hash = v;
-  else if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-  setTimeout(() => { skipHash = false; }, 0);
+  if (v){
+    // 화면은 호출부에서 갱신하므로 hashchange 없이 주소와 방문 기록만 바꾼다
+    if (location.hash !== '#' + v) history.pushState(null, '', '#' + v);
+  }else if (location.hash) history.replaceState(null, '', location.pathname + location.search);
 }
 function fromHash(){
   const h = location.hash.replace('#', '').toUpperCase();
@@ -580,7 +579,6 @@ function fromHash(){
   return true;
 }
 window.addEventListener('hashchange', () => {
-  if (skipHash) return;
   if (!fromHash()) show('s-quiz');
 });
 
