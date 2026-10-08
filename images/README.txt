@@ -1,14 +1,7 @@
-페어링 버디 — 이미지 폴더
-==========================
+Pairing Buddy images
 
-여기 있는 사진은 모두 위키미디어 공용의 자유 이용 이미지입니다.
+The photos in this folder come from Wikimedia Commons. See ../README.md for their use and replacement instructions, and ../CREDITS.md for sources, authors, and licenses.
 
-- 어떤 파일이 어느 화면에 쓰이는지, 어떻게 교체하는지 → ../README.md
-- 사진별 원본·저작자·라이선스                        → ../CREDITS.md
+Replace files using the same names. Missing images fall back to icons.
 
-같은 파일명으로 덮어쓰면 바로 반영됩니다.
-파일이 없거나 로드에 실패하면 이모지가 대신 표시됩니다.
-
-지금 화면에 쓰는 파일은 sool-*.jpg 6장(페어링 술 사진)뿐입니다.
-pair-*.jpg 와 find-*.jpg 는 이전 버전(스와이프 · 발견 탭)에서 쓰던 파일로,
-지금은 어디에도 표시되지 않습니다. 필요 없으면 지워도 화면은 그대로 동작합니다.
+The current version uses six sool-*.jpg drink photos. The pair-*.jpg and find-*.jpg files belong to the earlier swipe/discovery version and are not displayed.

@@ -1,114 +1,75 @@
-# 페어링 버디 — 오늘 뭐 먹지?
+# Pairing Buddy
 
-다섯 번만 고르면 **오늘 먹을 안주**와 **거기에 맞는 술**을 찾아 주는 취향 테스트 프로토타입입니다.
-MBTI 검사처럼 A/B 를 고르면 끝. 5문항이 **화면 높이에 맞춰 배치**되고, 마지막에 근처에서 먹을 곳을 구글 지도로 열어 줍니다.
-빌드 도구 없는 정적 페이지 한 장(`index.html`)이라 파일만 열어도 그대로 돌아갑니다.
+A five-question preference test that recommends food and a matching drink. The prototype is a single static `index.html` page without build tools.
 
-## 어떻게 동작하나
+## Questions and results
 
-질문 5개 중 **앞 4개가 음식 유형(16가지)** 을 정하고, **마지막 1개가 술의 세기**를 정합니다.
+The first four answers select one of sixteen foods. The fifth selects one of two drink pairings.
 
-| # | 질문 | A | B |
-| --- | --- | --- | --- |
-| Q1 | 오늘 혀는 어느 쪽? | 매운 거 `S` | 순한 거 `M` |
-| Q2 | 입에 남는 맛은? | 기름진 거 `R` | 담백한 거 `L` |
-| Q3 | 국물, 있어야 하나? | 국물 필수 `W` | 마른 걸로 `D` |
-| Q4 | 오늘의 양은? | 든든하게 `H` | 가볍게 `B` |
-| Q5 | 같이 마실 건? | 진하게 한 잔 `X` | 시원하게 벌컥 `Y` |
+| Question | Option A | Option B |
+|---|---|---|
+| Flavor | Spicy, S | Mild, M |
+| Richness | Rich, R | Light, L |
+| Broth | With broth, W | Dry, D |
+| Portion | Hearty, H | Small, B |
+| Drink | Stronger, X | Refreshing, Y |
 
-앞 4글자를 이어 붙인 **네 글자 코드**가 그대로 음식 키가 됩니다. 예) `SRDH` → 매운 양념치킨.
-Q5 는 그 음식의 두 가지 페어링 중 하나를 고릅니다 —
-`x` 는 잔에 따라 마시는 술(소주 · 사케 · 와인), `y` 는 차갑게 들이켜는 술(맥주 · 하이볼 · 막걸리)입니다.
+The first four letters form the food key. For example, SRDH selects spicy fried chicken. The lowercase x pairing uses soju, sake, or wine; y uses beer, highballs, or makgeolli.
 
-### 16가지 결과
+| Code | Food | Code | Food |
+|---|---|---|---|
+| SRWH | Pork backbone stew | MRWH | Beef hot pot |
+| SRWB | Tteokbokki in broth | MRWB | Garlic shrimp |
+| SRDH | Spicy fried chicken | MRDH | Grilled pork belly |
+| SRDB | Spicy chicken feet | MRDB | Assorted Korean pancakes |
+| SLWH | Spicy seafood soup | MLWH | Clear cod soup |
+| SLWB | Spicy mussel soup | MLWB | Fish cake soup |
+| SLDH | Stir-fried octopus | MLDH | White fish sashimi |
+| SLDB | Seasoned sea snails | MLDB | Dried pollock |
 
-| 코드 | 음식 | 코드 | 음식 |
-| --- | --- | --- | --- |
-| `SRWH` | 감자탕 | `MRWH` | 소고기 전골 |
-| `SRWB` | 국물 떡볶이 | `MRWB` | 감바스 알 아히요 |
-| `SRDH` | 매운 양념치킨 | `MRDH` | 삼겹살 구이 |
-| `SRDB` | 매운 닭발 | `MRDB` | 모둠전 |
-| `SLWH` | 얼큰 해물탕 | `MLWH` | 맑은 대구탕 |
-| `SLWB` | 매콤 홍합탕 | `MLWB` | 어묵탕 |
-| `SLDH` | 낙지볶음 | `MLDH` | 흰살 생선회 |
-| `SLDB` | 골뱅이 무침 | `MLDB` | 먹태 |
+Results include food, a type name, drink pairing, a nonalcoholic option, map searches, and two alternatives that change one preference.
 
-결과 화면에는 추천 안주 · 유형 이름 · 어울리는 술과 궁합 · 술 없이 마실 것 · **근처에서 먹을 곳** · 한 축만 바꾼 대안 2개가 함께 나옵니다.
+## Map searches
 
-## 근처에서 먹기 (지도)
+The prototype opens [Google Maps search URLs](https://developers.google.com/maps/documentation/urls/get-started#search-action) in a new tab. It does not use an API key or store a restaurant database.
 
-지도 API 나 키를 쓰지 않습니다. [구글 지도 검색 URL](https://developers.google.com/maps/documentation/urls/get-started#search-action) 한 줄을 만들어 새 탭으로 여는 게 전부예요.
+`AREAS` contains the default areas around Inha University's rear entrance and Juan Station. `FOOD_Q` and `DRINK_Q` separate search terms from display names. Searches without an area let Google Maps handle location context.
 
-```
-https://www.google.com/maps/search/?api=1&query=감자탕 인하대 후문
-```
+## Sharing
 
-- 지역을 안 붙인 줄은 **사용자의 현재 위치** 기준으로 가까운 곳부터 구글이 찾아 줍니다.
-- 지역 줄은 `AREAS` 배열에서 고칩니다(기본값은 인하대 후문 · 주안역).
-- 검색어는 `FOOD_Q` / `DRINK_Q` 에 있습니다. 화면에 쓰는 이름(`먹태 (구운 노가리)`)과 검색이 잘 되는 말(`먹태`)이 달라서 따로 둡니다.
+The result code is added to the URL fragment, for example `index.html#SRDHX`. Opening that link shows the result directly. The copy-result action includes the URL.
 
-> 저장된 매장 목록이 아니라 지도 검색으로 연결되는 링크입니다. 매장 이름·주소를 하드코딩하지 않았습니다.
-
-## 결과 공유
-
-결과가 나오면 주소 끝에 코드가 붙습니다 — `index.html#SRDHX`.
-이 주소를 그대로 열면 테스트를 건너뛰고 같은 결과가 바로 보입니다. `결과 복사` 버튼은 이 주소까지 함께 복사합니다.
-
-## 실행
-
-로컬에서 보려면 이 폴더에서 정적 서버를 띄웁니다.
+## Running and deployment
 
 ```bash
 python -m http.server 8099
 ```
 
-`index.html`을 더블클릭해도 열리지만, `file://` 로 열면 브라우저에 따라 이미지 경로와 클립보드가 막힐 수 있어 서버 실행을 권합니다.
+Use the local server to avoid local-file restrictions on images and the clipboard. Main pushes deploy the repository root to GitHub Pages through `.github/workflows/deploy.yml`, without a build.
 
-## 배포
+## Editing content
 
-`main` 에 푸시하면 GitHub Actions(`.github/workflows/deploy.yml`)가 저장소 루트를 그대로 GitHub Pages 로 올립니다.
-별도 빌드 단계는 없습니다.
+| Constant | Purpose |
+|---|---|
+| QUESTIONS | Five questions and A/B text; keep the answer codes. |
+| DRINK | Six drinks, image names, and photo credits in c. |
+| FOOD | Sixteen food keys and their x/y pairings. |
+| AREAS, FOOD_Q, DRINK_Q | Map areas and search terms. |
 
-## 내용 고치기
+Keep all sixteen FOOD keys so every combination has a result. Update FOOD_Q when changing a food key.
 
-전부 `index.html` 아래쪽 상수들만 건드리면 됩니다.
+The questions share the available height. On smaller screens, only the question area scrolls while progress and the result button remain visible. Description lines hide below 660 pixels of height.
 
-| 상수 | 하는 일 |
-| --- | --- |
-| `QUESTIONS` | 질문 5개와 A/B 문구. 값(`v`)은 위 표의 알파벳을 그대로 씁니다 |
-| `DRINK` | 술 6종. `img` 는 `images/` 파일명, `c` 는 사진 저작자·라이선스 |
-| `FOOD` | 음식 16종. 키는 네 글자 코드, `x`/`y` 가 진하게 / 시원하게 쪽 페어링 |
-| `AREAS` · `FOOD_Q` · `DRINK_Q` | 지도 링크에 쓰는 지역과 검색어 |
+## Photos
 
-음식을 바꾸려면 `FOOD` 의 해당 코드 항목만 고치면 되고, **키 16개는 그대로 두어야** 모든 조합에 결과가 나옵니다.
-`FOOD` 에 코드를 추가·변경하면 `FOOD_Q` 의 같은 키도 같이 고쳐야 지도 검색어가 비지 않습니다.
+Replace the matching files in `images/`: `sool-makgeolli.jpg`, `sool-sake.jpg`, `sool-ipa.jpg`, `sool-highball.jpg`, `sool-soju.jpg`, and `sool-wine.jpg`. Missing images fall back to icons. Foods use icons rather than photos.
 
-질문 화면은 남은 높이를 5문항이 나눠 갖는 flex 레이아웃이라, 공간이 충분하면 **스크롤 없이 한 화면**에 들어갑니다.
-문항을 늘리거나 화면 높이가 부족해지면 선택지의 내용 높이를 유지하고 **질문 영역만 스크롤**합니다. 진행률과 결과 보기 버튼은 그대로 보입니다.
-세로 660px 이하에서는 설명 줄이 자동으로 숨습니다.
+`pair-makgeolli.jpg`, `anju-jeon.jpg`, and `find-*.jpg` belong to the earlier swipe/discovery version and are not displayed by this version.
 
-## 사진
+Update [CREDITS.md](CREDITS.md) and DRINK's c entries when replacing photos. Photo credits appear in result cards.
 
-`images/` 안의 파일을 **같은 이름**으로 덮어쓰면 자동 반영됩니다. 파일이 없거나 로드에 실패하면 이모지가 대신 보입니다.
+## License
 
-| 파일 | 쓰이는 곳 |
-| --- | --- |
-| `sool-makgeolli.jpg` | 페어링 · 생막걸리 |
-| `sool-sake.jpg` | 페어링 · 준마이 사케 |
-| `sool-ipa.jpg` | 페어링 · 크래프트 IPA |
-| `sool-highball.jpg` | 페어링 · 위스키 하이볼 |
-| `sool-soju.jpg` | 페어링 · 증류식 소주 |
-| `sool-wine.jpg` | 페어링 · 레드와인 |
+The code may be freely used. Photos retain their original licenses; see [CREDITS.md](CREDITS.md).
 
-음식은 사진 대신 이모지로 보여 줍니다(16종 사진을 라이선스까지 맞춰 구하기 어려워서).
-`pair-makgeolli.jpg` · `anju-jeon.jpg` · `find-*.jpg` 는 이전 버전(스와이프·발견 탭)에서 쓰던 파일로, 지금은 화면에 나오지 않습니다.
-
-사진을 바꾸면 `CREDITS.md` 와 `index.html` 의 `DRINK[...].c` 항목도 함께 갱신하세요.
-CC BY / BY-SA 사진은 저작자 표기가 의무라, 화면에 나온 사진의 출처를 결과 카드 안에 함께 싣고 있습니다.
-
-## 라이선스
-
-- 코드(`index.html`): 자유롭게 사용하세요.
-- 사진: 각 사진의 원 라이선스를 따릅니다. [CREDITS.md](CREDITS.md) 참고.
-
-> 화면 안의 제품명·궁합 수치는 데모용 예시이며 실제 데이터가 아닙니다.
+Product names and pairing scores are demonstration data.
