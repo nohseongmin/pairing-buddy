@@ -47,6 +47,15 @@ python -m http.server 8099
 
 Use the local server to avoid local-file restrictions on images and the clipboard. Main pushes deploy the repository root to GitHub Pages through `.github/workflows/deploy.yml`, without a build.
 
+### Browser regression checks
+
+With the local server running from the repository root, open these pages:
+
+- [tests/hash-navigation.html](tests/hash-navigation.html) checks that choosing an alternative updates the share URL, renders the result once, and keeps focus and scroll position.
+- [tests/quiz-scroll.html](tests/quiz-scroll.html) checks that restarting on a short screen returns to the first question, clears the answers, and disables the result button.
+
+Each page runs its checks on load and displays `통과했습니다.` on success or `실패했습니다:` followed by the failed check. Open both pages to check both behaviors.
+
 ## Editing content
 
 | Constant | Purpose |
