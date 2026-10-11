@@ -442,7 +442,7 @@ const flip = (code, i, pair) =>
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
-  const active = $('.screen.active .scroll');
+  const active = $('.screen.active .scroll, .screen.active #quiz');
   if (active) active.scrollTop = 0;
   $('.screen.active').focus();
 }
