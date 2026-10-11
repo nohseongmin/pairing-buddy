@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>다시 하기 질문 스크롤 회귀 확인</title>
+</head>
+<body>
+<p>저장소 루트에서 정적 서버를 띄운 뒤 이 파일을 열어 주세요.</p>
+<p id="status" role="status">확인 중입니다.</p>
+<iframe id="app" src="../index.html" width="390" height="320" title="페어링 버디"></iframe>
+<script>
+"use strict";
+
+const frame = document.querySelector('#app');
+
+function assert(condition, message){
+  if (!condition) throw new Error(message);
+}
+
+frame.addEventListener('load', () => {
+  try{
+    const doc = frame.contentWindow.document;
+    const quiz = doc.querySelector('#quiz');
+    quiz.querySelectorAll('input[id$="a"]').forEach(input => input.click());
+    quiz.scrollTop = quiz.scrollHeight;
+    assert(quiz.scrollTop > 0, '짧은 화면에서 질문 영역이 스크롤되어야 합니다.');
+
+    doc.querySelector('#btn-result').click();
+    assert(doc.querySelector('#s-result').classList.contains('active'), '결과 화면으로 이동해야 합니다.');
+    doc.querySelector('#btn-again').click();
+
+    assert(doc.querySelector('#s-quiz').classList.contains('active'), '다시 하기 후 질문 화면으로 이동해야 합니다.');
+    assert(quiz.scrollTop === 0, '다시 하기 후 첫 질문부터 보여야 합니다.');
+    assert(quiz.querySelectorAll('input:checked').length === 0, '다시 하기 후 선택한 답변이 없어야 합니다.');
+    assert(doc.querySelector('#btn-result').disabled, '다시 하기 후 결과 버튼이 비활성화되어야 합니다.');
+    document.querySelector('#status').textContent = '통과했습니다.';
+  }catch(error){
+    document.querySelector('#status').textContent = '실패했습니다: ' + error.message;
+    throw error;
+  }
+}, {once:true});
+</script>
+</body>
+</html>
