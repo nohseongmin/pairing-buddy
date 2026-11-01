@@ -434,6 +434,8 @@ function refresh(){
   $('#btn-result').disabled = done < QUESTIONS.length;
 }
 $('#quiz').addEventListener('change', refresh);
+// pageshow 뒤에 복원되는 답변까지 반영한다.
+window.addEventListener('pageshow', () => setTimeout(refresh, 0));
 
 /* ─────────── 결과 ─────────── */
 /* 같은 축 하나만 뒤집으면 '비슷한데 조금 다른' 음식이 나온다 */

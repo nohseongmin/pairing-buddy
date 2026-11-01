@@ -53,8 +53,9 @@ With the local server running from the repository root, open these pages:
 
 - [tests/hash-navigation.html](tests/hash-navigation.html) checks that choosing an alternative updates the share URL, renders the result once, and keeps focus and scroll position.
 - [tests/quiz-scroll.html](tests/quiz-scroll.html) checks that restarting on a short screen returns to the first question, clears the answers, and disables the result button.
+- [tests/quiz-restore.html](tests/quiz-restore.html) checks that answers restored without change events update progress and enable the result button only when complete.
 
-Each page runs its checks on load and displays `통과했습니다.` on success or `실패했습니다:` followed by the failed check. Open both pages to check both behaviors.
+Each page runs its checks on load and displays `통과했습니다.` on success or `실패했습니다:` followed by the failed check. Open each page to check all behaviors.
 
 ## Editing content
 
