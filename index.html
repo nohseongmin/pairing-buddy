@@ -434,6 +434,7 @@ function refresh(){
   $('#btn-result').disabled = done < QUESTIONS.length;
 }
 $('#quiz').addEventListener('change', refresh);
+$('#quiz').addEventListener('submit', e => e.preventDefault());
 // pageshow 뒤에 복원되는 답변까지 반영한다.
 window.addEventListener('pageshow', () => setTimeout(refresh, 0));
 

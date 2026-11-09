@@ -49,11 +49,22 @@ Use the local server to avoid local-file restrictions on images and the clipboar
 
 ### Browser regression checks
 
+Run all existing browser regression pages with Python 3.8+ and an installed Chrome, Edge, or Chromium browser:
+
+```bash
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+The runner uses only the Python standard library, starts a temporary loopback server on an available port, and opens each regression page in a headless browser. It fails if a page reports a failure, never finishes, or the browser cannot run. It checks `BROWSER_BIN` first, then `PATH`, then standard Chrome and Edge installation locations under `PROGRAMFILES`, `PROGRAMFILES(X86)`, and `LOCALAPPDATA` on Windows. For other installation locations, set `BROWSER_BIN` to the executable's full path before running the command. No separate server is needed for this command.
+
+For manual checks, use the local server described above.
+
 With the local server running from the repository root, open these pages:
 
 - [tests/hash-navigation.html](tests/hash-navigation.html) checks that choosing an alternative updates the share URL, renders the result once, and keeps focus and scroll position.
 - [tests/quiz-scroll.html](tests/quiz-scroll.html) checks that restarting on a short screen returns to the first question, clears the answers, and disables the result button.
 - [tests/quiz-restore.html](tests/quiz-restore.html) checks that answers restored without change events update progress and enable the result button only when complete.
+- [tests/quiz-submit.html](tests/quiz-submit.html) checks that default form submission is canceled, preserves answers and progress, and leaves the result button working.
 
 Each page runs its checks on load and displays `통과했습니다.` on success or `실패했습니다:` followed by the failed check. Open each page to check all behaviors.
 
